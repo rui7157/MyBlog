@@ -1,0 +1,49 @@
+{% extends 'meta.html' %}
+{% block script %}
+    <script>
+        'use strict';
+        $(function () {
+            var csrftoken = $('meta[name=csrf-token]').attr('content');
+            $.ajaxSetup({
+                beforeSend: function (xhr, settings) {
+                    if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                    }
+                }
+            });
+            $('.delPost').click(function () {
+                console.log($(this).parent().parent().children()[0]);
+                var curTr = $(this).parent().parent();
+                var pid = $(curTr.children()[0]).text();
+                $.post("{{ url_for('admin.delete')}}", {"pid": pid}, function (result) {
+                    if (result == "success") {
+                        {#                alert("删除成功！");#}
+                        curTr.hide(1);
+                    } else {
+                        alert("删除失败！");
+                    }
+                });
+            });
+        })
+    </script>
+{% endblock %}
+{% block navmap %}管理首页{% endblock navmap %}
+{% block content %}
+    <table class="table table-st riped">
+        <tr>
+            <td>id</td>
+            <td>标题</td>
+            <td>时间</td>
+            <td>操作</td>
+        </tr>
+        {%- for post in posts %}
+            <tr>
+                <td>{{ post.id }}</td>
+                <td>{{ post.title }}</td>
+                <td>{{ post.addtime }}</td>
+                <td><a class="simp-btn" href="{{ url_for('admin.new_post',pid=post.id) }}" target="_blank">编辑</a><a
+                        class="simp-btn delPost">删除</a></td>
+            </tr>
+        {% endfor -%}
+    </table>
+{% endblock content %}

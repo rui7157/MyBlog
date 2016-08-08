@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{%- block main %}
+    <article class="post post-1">
+        <header class="entry-header">
+            <h1 class="entry-title">{{ single_post.title }}</h1>
+            <div class="entry-meta">
+                <span class="post-category">{%- for type in single_post.type_posts %}
+                    <a href="{{ url_for("main.fullwidth",category=type.id) }}">{%- if loop.last %}{{ type.name }}</a>{% else %}{{ type.name }}</a> | {% endif -%}{% endfor -%}</span>
+                <span class="post-date"><a href="#">
+                    <time class="entry-date" datetime="{{ single_post.addtime }}">{{ single_post.addtime }}</time>
+                </a></span><span class="post-hits"><a href="#">{{ single_post.hits }} 浏览</a></span>
+                <span class="comments-link"><a href="#">0 评论</a></span>
+            </div>
+        </header>
+        <div class="entry-content clearfix">
+            <p>{{ single_post.content|safe }}</p>
+        </div>
+    </article>
+{% endblock main -%}

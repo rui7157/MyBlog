@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "_macro.html" as macros %}
+{% block title %}NvRay&文章{% endblock %}
+{% block script %}
+    <script src="{{ url_for('static',filename='js/magesloaded.pkgd.min.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <main class="col-md-12" id="post_content">
+                {%- block main %}{{ super() }}{% endblock main -%}
+                {% if pagination %}
+                    <div class="pagination">{{ macros.pagination_widget(pagination, 'main.fullwidth') }}</div>{% endif %}
+            </main>
+        </div>
+    </div>
+{% endblock content %}

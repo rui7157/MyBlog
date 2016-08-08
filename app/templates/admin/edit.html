@@ -1,0 +1,33 @@
+{% extends 'meta.html' %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="../../static/css/wangEditor.min.css"/>{% endblock %}
+{% block navmap %}发布文章{% endblock navmap %}
+
+{% block content %}
+    <p>发布新文章</p>
+    <ul class="ulColumn2">
+        <form action="{{ url_for('admin.new_post') }}" method="POST">
+            {{ form.csrf_token }}
+            {{ form.pid(type="hidden")}}
+            <li>{{ form.title(class="textbox textbox_295",placeholder="输入标题") }}</li>
+            <script type="text/javascript" src="../static/js/wangEditor.min.js"></script>
+            <li>{{ form.tag(class="textbox textbox_225",id="tag",placeholder="输入标签(使用，,或者空格分隔多个标签)") }}<span> 标签：</span>{%- for tag in tags %}<span class="tag">{{ tag }}</span>{% endfor -%}</li>
+            <li>{{ form.content(id="edit_post",style="height:400px;")}}</li>
+            <li><button class="link_btn">发布</button></li>
+        </form>
+    </ul>
+    <!--这里引用jquery和wangEditor.js-->
+    <script type="text/javascript">
+        var editor = new wangEditor('edit_post');
+        editor.create();
+    </script>
+    <script>
+    {%- for message in get_flashed_messages() %}
+        alert("{{message}}");
+    {% endfor -%}
+    </script>
+
+
+
+{% endblock content %}
