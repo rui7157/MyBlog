@@ -6,7 +6,10 @@ import re
 from werkzeug.security import generate_password_hash, check_password_hash
 
 # from .db import db.Column, DateTime, Integer, String, Text, text,Model
-from html.parser import HTMLParser
+try:
+    from html.parser import HTMLParser
+except ImportError as e:
+    from HTMLParser import HTMLParser
 from re import sub
 
 
