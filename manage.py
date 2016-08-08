@@ -9,4 +9,5 @@ app=create_app()
 migrate=Migrate(app,db)
 manager=Manager(app)
 manager.add_command("db",MigrateCommand)
-app.run(host="127.0.0.1",port=80,debug=True,use_reloader=False)
+if __name__ =="__main__":
+    app.run(host="127.0.0.1",port=80,debug=True,use_reloader=False)
