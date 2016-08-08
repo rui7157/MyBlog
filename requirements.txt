@@ -22,3 +22,4 @@ sqlacodegen==1.1.6
 SQLAlchemy==1.0.14
 Werkzeug==0.11.10
 WTForms==2.1
+gunicorn==19.6.0
