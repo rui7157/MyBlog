@@ -4,15 +4,13 @@ from datetime import datetime
 import bleach
 import re
 from werkzeug.security import generate_password_hash, check_password_hash
-
-# from .db import db.Column, DateTime, Integer, String, Text, text,Model
 try:
     from html.parser import HTMLParser
 except ImportError as e:
     from HTMLParser import HTMLParser
 from re import sub
 
-db.create_all()
+
 class _DeHTMLParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)

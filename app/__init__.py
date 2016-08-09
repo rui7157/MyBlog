@@ -8,8 +8,6 @@ import logging.config
 loginManager = LoginManager()
 csrf = CsrfProtect()
 db = SQLAlchemy()
-
-
 def create_app():
     app = Flask(__name__, static_folder='static')
     from config import Configuration
