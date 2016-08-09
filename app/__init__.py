@@ -16,6 +16,8 @@ def create_app():
     logging.config.fileConfig(Configuration.LOGGING_CONFIG_PATH)
     app.config.from_object(Configuration)
     db.init_app(app)
+    with app.app_context():
+        db.create_all()
     csrf.init_app(app)
     loginManager.init_app(app)
     from .blog import main
