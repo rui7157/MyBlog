@@ -9,7 +9,7 @@ loginManager = LoginManager()
 csrf = CsrfProtect()
 db = SQLAlchemy()
 def create_app():
-    app = Flask(__name__, static_folder='static')
+    app = Flask(__name__)
     from config import Configuration
     logging.config.fileConfig(Configuration.LOGGING_CONFIG_PATH)
     app.config.from_object(Configuration)
