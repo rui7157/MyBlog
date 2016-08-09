@@ -12,7 +12,7 @@ except ImportError as e:
     from HTMLParser import HTMLParser
 from re import sub
 
-
+db.create_all()
 class _DeHTMLParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)

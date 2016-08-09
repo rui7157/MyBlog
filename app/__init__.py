@@ -22,5 +22,4 @@ def create_app():
     app.register_blueprint(main)
     from .admin import adm
     app.register_blueprint(adm, url_prefix="/adm")
-    db.create_all()
     return app
