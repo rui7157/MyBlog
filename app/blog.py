@@ -47,7 +47,7 @@ def index():
     url_map=current_app.url_map
     return render_template("index.html", posts=posts, recent_posts=recent_posts, types=types, archives=archives,map=url_map)
 
-
+    
 @main.route("/about/")
 def about():
     return render_template("about.html")
@@ -107,3 +107,4 @@ def single(id):
 @main.route("/contact/")
 def contact():
     return render_template("contact.html")
+    
