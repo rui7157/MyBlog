@@ -3,11 +3,11 @@ from .models import Post, Type
 from flask import render_template, Blueprint, request, current_app
 from . import db
 from sqlalchemy.exc import InternalError
-import logging
+# import logging
 import os 
 import glob
 main = Blueprint("main", __name__)
-logging.getLogger(__name__)
+# logging.getLogger(__name__)
 MONTH = {
     1: u"一月",
     2: u"二月",
@@ -68,7 +68,8 @@ def fullwidth():
         try:
             year, zh_month = classify.split(" ")
         except ValueError as e:
-            logging.error("user defined url month error:{}".format(e))
+            # logging.error("user defined url month error:{}".format(e))
+            pass
         else:
             num_month = REVMONTH.get(zh_month)
             if num_month:
@@ -77,7 +78,8 @@ def fullwidth():
                             Post.addtime >= "{}-{}-01".format(year, num_month)).filter(
                             Post.addtime <= "{}-{}-31".format(year, num_month))
                 except InternalError as e:
-                    logging.error("sqlalchemy date query error:{}".format(e))
+                    # logging.error("sqlalchemy date query error:{}".format(e))
+                    pass
     elif str(category_id).isdigit():
         # 按tag查询
         posts = Type.query.get(int(category_id)).post_types

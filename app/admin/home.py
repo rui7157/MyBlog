@@ -7,8 +7,8 @@ from functools import wraps
 from ..models import Post, db, Type,User
 from ..form import PostForm,LoginForm
 import re
-import logging
-logging.getLogger(__name__)
+# import logging
+# logging.getLogger(__name__)
 
 def login_required(func):
     @wraps(func)
@@ -87,7 +87,7 @@ def delete():
             db.session.commit()
         except Exception as e:
             current_app.logger.error('An delete post error,{} '.format(e))
-            logging.error('An delete post error:{}'.format(e))
+            # logging.error('An delete post error:{}'.format(e))
             return "fail"
         else:
             return "success"
@@ -113,7 +113,7 @@ def login():
             if user:
                 if user.verif_password(password):
                 #登陆成功
-                    logging.info("user:{} login".format(user.uname))
+                    # logging.info("user:{} login".format(user.uname))
                     if isRemember:
                         login_user(user,True)
                     else:
@@ -125,7 +125,7 @@ def login():
                 session["retryTimes"]["unable"]=datetime.now()
             return redirect(url_for('admin.login'))
         else:
-            logging.warning('Anonymous users repeatedly try landing failed!')
+            # logging.warning('Anonymous users repeatedly try landing failed!')
             flash(u"尝试登录次数过多请稍后再试！{}".format((datetime.now()-session.get('retryTimes').get("unable")).seconds))
             if int((datetime.now()-session.get('retryTimes').get("unable")).seconds)/60>5:
                 session['retryTimes']['times']+=1
@@ -134,6 +134,6 @@ def login():
 
 @adm.route("/logout")
 def logout():
-    logging.info("user:{} logout.".format(current_user.uname))
+    # logging.info("user:{} logout.".format(current_user.uname))
     logout_user()
     return redirect(url_for("main.index"))
