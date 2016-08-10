@@ -6,7 +6,11 @@ from app import create_app
 from app.models import db
 
 
-app=create_app()
+# app=create_app()
+app=create_app(__name__)
+@app.route("/")
+def index():
+    return "test"
 app.debug=True
 migrate=Migrate(app,db)
 manager=Manager(app)
