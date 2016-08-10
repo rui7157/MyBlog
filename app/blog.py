@@ -44,7 +44,7 @@ def get_container_data():
 def index():
     posts = Post.query.order_by(Post.addtime.desc())
     recent_posts, types, archives = get_container_data()
-    url_map=current_app.url_map
+    url_map=current_app.static_folder
     return render_template("index.html", posts=posts, recent_posts=recent_posts, types=types, archives=archives,map=url_map)
 
     
