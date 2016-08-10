@@ -4,7 +4,8 @@ from flask import render_template, Blueprint, request, current_app
 from . import db
 from sqlalchemy.exc import InternalError
 import logging
-
+import os 
+import glob
 main = Blueprint("main", __name__)
 logging.getLogger(__name__)
 MONTH = {
@@ -44,7 +45,7 @@ def get_container_data():
 def index():
     posts = Post.query.order_by(Post.addtime.desc())
     recent_posts, types, archives = get_container_data()
-    url_map=current_app.static_folder
+    url_map=glob.glob(os.path.join(current_app.static_folder,"*"))
     return render_template("index.html", posts=posts, recent_posts=recent_posts, types=types, archives=archives,map=url_map)
 
     
