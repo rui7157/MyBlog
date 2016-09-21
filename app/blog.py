@@ -1,13 +1,13 @@
 #coding:utf-8
-from .models import Post, Type
-from flask import render_template, Blueprint, request, current_app
+from .models import Post, Type,User
+from flask import render_template, Blueprint, request, current_app,flash,redirect,url_for
 from . import db
 from sqlalchemy.exc import InternalError
-# import logging
+import logging
 import os 
 import glob
 main = Blueprint("main", __name__)
-# logging.getLogger(__name__)
+logging.getLogger(__name__)
 MONTH = {
     1: u"一月",
     2: u"二月",
@@ -45,12 +45,23 @@ def get_container_data():
 def index():
     posts = Post.query.order_by(Post.addtime.desc())
     recent_posts, types, archives = get_container_data()
-    url_map=glob.glob(os.path.join(current_app.static_folder,"*"))
-    return render_template("index.html", posts=posts, recent_posts=recent_posts, types=types, archives=archives,map=url_map)
+    return render_template("index.html", posts=posts, recent_posts=recent_posts, types=types, archives=archives)
+
+@main.route("/admin",methods=['POST','GET'])
+def admin():
+    from form import LoginForm
+    form=LoginForm()
+    if request.method=="POST":
+        if form.validate_on_submit():
+            flash(u"密码或用户名错误！")
+            logging.warning("Anonymous users attempt to log in!")
+            return redirect(url_for('main.admin'))
+    return render_template("admin/login.html",form=form,fal=1)
 
     
 @main.route("/about/")
 def about():
+    
     return render_template("about.html")
 
 
@@ -68,7 +79,7 @@ def fullwidth():
         try:
             year, zh_month = classify.split(" ")
         except ValueError as e:
-            # logging.error("user defined url month error:{}".format(e))
+            logging.error("user defined url month error:{}".format(e))
             pass
         else:
             num_month = REVMONTH.get(zh_month)
@@ -78,8 +89,8 @@ def fullwidth():
                             Post.addtime >= "{}-{}-01".format(year, num_month)).filter(
                             Post.addtime <= "{}-{}-31".format(year, num_month))
                 except InternalError as e:
-                    # logging.error("sqlalchemy date query error:{}".format(e))
-                    pass
+                    logging.error("sqlalchemy date query error:{}".format(e))
+                    
     elif str(category_id).isdigit():
         # 按tag查询
         posts = Type.query.get(int(category_id)).post_types
@@ -90,10 +101,6 @@ def fullwidth():
     return render_template("full-width.html", posts=posts, recnet_posts=recent_posts, types=types, archives=archives,
                            pagination=pagination)
 
-
-@main.route("/posts", methods=["POST"])
-def posts():
-    return "DDDDD"
 
 
 @main.route("/single/<int:id>.html")

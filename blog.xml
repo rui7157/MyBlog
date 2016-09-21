@@ -1,0 +1,17 @@
+<uwsgi>
+ 
+    <pythonpath>/var/www/blog</pythonpath>
+ 
+    <module>manage</module>
+ 
+    <callable>app</callable>
+ 
+    <socket>127.0.0.1:5000</socket>
+ 
+    <master/>
+ 
+    <processes>4</processes>
+ 
+    <memory-report/>
+ 
+</uwsgi>

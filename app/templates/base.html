@@ -69,8 +69,9 @@
         {% block content %}
 			<div class="container">
 				<div class="row">
+                {% block main %}
 					<main class="col-md-8">
-                    {% block main %}
+                    
                         {%- for post in posts %}
 						<article class="post post-{{ loop.index }}">
 							<header class="entry-header">
@@ -93,8 +94,9 @@
 						</article>
                         {% endfor -%}
 
-                    {% endblock main -%}
+                    
 					</main>
+                    {% endblock main -%}
 					<aside class="col-md-4">
 						<div class="widget widget-recent-posts">
 							<h3 class="widget-title">—近期—</h3>
@@ -138,7 +140,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
-						<p class="copyright">&copy; 2016 NvRay - <a href="https://github.com/rui7157"><span class="github">Github</span></a> - <a href="{{ url_for('admin.index') }}">后台管理</a></p>
+						<p class="copyright">&copy; 2016 NvRay - <a href="https://github.com/rui7157"><span class="github">Github</span></a> - <a href="{{url_for('main.admin')}}">后台管理</a></p>
 					</div>
 				</div>
 			</div>

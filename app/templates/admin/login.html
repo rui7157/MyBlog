@@ -18,7 +18,7 @@
 <div class="LoginWindow">
     <div>
         <div class="login">
-            <form action="{{ url_for('admin.login') }}" method="POST">
+            <form action="{%- if fal %} {{url_for('main.admin')}} {% else %}{{url_for('admin.login') }}{% endif -%}" method="POST">
                 {{ form.csrf_token() }}
                 <p>{{ form.username(id="id",placeholder="输入用户名")}}</p>
                 <p>{{ form.password(id="password",placeholder="输入密码") }}</p>
@@ -40,7 +40,7 @@
 </div>
 <script>
     {% for message in get_flashed_messages() %}
-        alert("{{ message }}");
+        alert("{{ message }}"); 
     {% endfor %}
 </script>
 </body>

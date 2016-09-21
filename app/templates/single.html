@@ -1,5 +1,35 @@
 {% extends "base.html" %}
+{% block script %} 
+<script type="text/javascript">
+//UTC 转换本地时间
+Date.prototype.Format = function (fmt) { //author: meizz 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分 
+        "s+": this.getSeconds(), //秒 
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+        "S": this.getMilliseconds() //毫秒 
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
+window.onload=function(){
+var timeTag=document.getElementById("time");
+var utcTime=Date.parse("{{ single_post.addtime }}");
+var tempTime=new Date();
+utcTime-=tempTime.getTimezoneOffset() * 60 * 1000;
+var localTime=new Date(utcTime).Format("yyyy-MM-dd hh:mm:ss");
+timeTag.setAttribute("datetime",localTime);
+timeTag.innerText=localTime;}
+</script>
+{% endblock %}
 {%- block main %}
+<main class="col-md-8">
     <article class="post post-1">
         <header class="entry-header">
             <h1 class="entry-title">{{ single_post.title }}</h1>
@@ -7,7 +37,7 @@
                 <span class="post-category">{%- for type in single_post.type_posts %}
                     <a href="{{ url_for("main.fullwidth",category=type.id) }}">{%- if loop.last %}{{ type.name }}</a>{% else %}{{ type.name }}</a> | {% endif -%}{% endfor -%}</span>
                 <span class="post-date"><a href="#">
-                    <time class="entry-date" datetime="{{ single_post.addtime }}">{{ single_post.addtime }}</time>
+                    <time class="entry-date" id="time" datetime="{{ single_post.addtime }}">{{ single_post.addtime }}</time>
                 </a></span><span class="post-hits"><a href="#">{{ single_post.hits }} 浏览</a></span>
                 <span class="comments-link"><a href="#">0 评论</a></span>
             </div>
@@ -16,4 +46,5 @@
             <p>{{ single_post.content|safe }}</p>
         </div>
     </article>
+</main>
 {% endblock main -%}

@@ -8,7 +8,7 @@ Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
 Flask-WTF==0.12
 freeze==1.0.10
-html5lib==0.9999999
+html5lib==0.1
 HTMLParser==0.0.2
 inflect==0.2.5
 itsdangerous==0.24

@@ -7,8 +7,8 @@ from functools import wraps
 from ..models import Post, db, Type,User
 from ..form import PostForm,LoginForm
 import re
-# import logging
-# logging.getLogger(__name__)
+import logging
+logging.getLogger(__name__)
 
 def login_required(func):
     @wraps(func)
@@ -72,7 +72,6 @@ def new_post():
             db.session.commit()
             session.clear()
             flash(u"{}发布成功！".format(post.title))
-            # return redirect(url_for("admin.new_post"))
         return redirect(url_for('admin.new_post'))
     form.title.data, form.tag.data, form.content.data,form.pid.data = session.get("title"), session.get("tag"), session.get("content"),session.get("pid")
     return render_template("admin/edit.html", form=form, tags=tags)
@@ -87,7 +86,7 @@ def delete():
             db.session.commit()
         except Exception as e:
             current_app.logger.error('An delete post error,{} '.format(e))
-            # logging.error('An delete post error:{}'.format(e))
+            logging.error('An delete post error:{}'.format(e))
             return "fail"
         else:
             return "success"
@@ -98,7 +97,7 @@ def test():
     print(current_user)
     test=current_user
     return render_template("test.html",**locals())
-
+    
 @adm.route("/lr",methods=["POST","GET"])
 def login():
     form=LoginForm()
@@ -113,7 +112,7 @@ def login():
             if user:
                 if user.verif_password(password):
                 #登陆成功
-                    # logging.info("user:{} login".format(user.uname))
+                    logging.info("user:{} login".format(user.uname))
                     if isRemember:
                         login_user(user,True)
                     else:
@@ -125,8 +124,8 @@ def login():
                 session["retryTimes"]["unable"]=datetime.now()
             return redirect(url_for('admin.login'))
         else:
-            # logging.warning('Anonymous users repeatedly try landing failed!')
-            flash(u"尝试登录次数过多请稍后再试！{}".format((datetime.now()-session.get('retryTimes').get("unable")).seconds))
+            logging.warning('Anonymous users repeatedly try landing failed!')
+            flash(u"尝试登录次数过多请稍后再试！")
             if int((datetime.now()-session.get('retryTimes').get("unable")).seconds)/60>5:
                 session['retryTimes']['times']+=1
             return redirect(url_for('admin.login'))
@@ -134,6 +133,6 @@ def login():
 
 @adm.route("/logout")
 def logout():
-    # logging.info("user:{} logout.".format(current_user.uname))
+    logging.info("user:{} logout.".format(current_user.uname))
     logout_user()
     return redirect(url_for("main.index"))

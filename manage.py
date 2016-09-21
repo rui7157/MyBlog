@@ -6,15 +6,18 @@ from app import create_app
 from app.models import db
 
 
-# app=create_app()
-app=create_app(__name__)
-@app.route("/")
-def index():
-    return "test"
+app=create_app()
 app.debug=True
+
+
 migrate=Migrate(app,db)
 manager=Manager(app)
 manager.add_command("db",MigrateCommand)
+def make_shell_context():
+    return dict(app=app,db=db)
+manager.add_command("shell", Shell(make_context=make_shell_context))
+
+
 if __name__ =="__main__":
-    app.run()
+    app.run('0.0.0.0',port=5000)
     

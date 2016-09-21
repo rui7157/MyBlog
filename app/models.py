@@ -9,7 +9,8 @@ try:
 except ImportError as e:
     from HTMLParser import HTMLParser
 from re import sub
-
+import logging
+logging.getLogger(__name__)
 
 class _DeHTMLParser(HTMLParser):
     def __init__(self):
@@ -44,7 +45,7 @@ class Post(db.Model):
     showpic = db.Column(db.String(255))
     content = db.Column(db.Text, nullable=False)
     showcontent = db.Column(db.Text, nullable=False)  # 清除html各种标记对
-    addtime = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    addtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     hits = db.Column(db.Integer, nullable=False, default=0)
     types = db.relationship("Type", secondary="posttype", backref=db.backref("post_types"), passive_deletes=True)
 
@@ -63,7 +64,7 @@ class Post(db.Model):
 
     @str_tags.setter
     def str_tags(self, values):
-        self.types.clear()
+        self.types=[]
         for tag in values:
             self.types.append(self._find_or_create_tag(tag))
 
@@ -92,7 +93,7 @@ class Type(db.Model):
     __tablename__ = 'type'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), server_default=db.text("''"), unique=True)
-    addtime = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    addtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     posts = db.relationship("Post", secondary="posttype", backref=db.backref("type_posts"))
 
     def __repr__(self):
@@ -108,7 +109,7 @@ class User(db.Model):
     uname = db.Column(db.String(64), unique=True)
     hash_password = db.Column(db.String(64))
     role = db.Column(db.Integer)
-    addtime = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    addtime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     about = db.Column(db.Text, nullable=True)
 
     @property
@@ -120,6 +121,7 @@ class User(db.Model):
         self.hash_password = generate_password_hash(value)
 
     def verif_password(self, pwd):
+        logging.info("pwd is {},hashpwd is {}".format(pwd,self.hash_password))
         return check_password_hash(self.hash_password, pwd)
 
     # is_authenticated() 如果用户已经登录，必须返回 True ，否则返回 False

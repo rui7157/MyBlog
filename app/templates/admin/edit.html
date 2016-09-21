@@ -10,7 +10,7 @@
         <form action="{{ url_for('admin.new_post') }}" method="POST">
             {{ form.csrf_token }}
             {{ form.pid(type="hidden")}}
-            <li>{{ form.title(class="textbox textbox_295",placeholder="输入标题") }}</li>
+            <li>{{ form.title(class="textbox textbox_295",placeholder="输入标题",required="") }}</li>
             <script type="text/javascript" src="../static/js/wangEditor.min.js"></script>
             <li>{{ form.tag(class="textbox textbox_225",id="tag",placeholder="输入标签(使用，,或者空格分隔多个标签)") }}<span> 标签：</span>{%- for tag in tags %}<span class="tag">{{ tag }}</span>{% endfor -%}</li>
             <li>{{ form.content(id="edit_post",style="height:400px;")}}</li>
