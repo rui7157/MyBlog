@@ -36,8 +36,8 @@
 
 * 页面展示
     
-![demo](\app\static\img\demo.png)
-![demo2](\app\static\img\demo2.png)
-![demo3](\app\static\img\demo3.png)
-![demo4](\app\static\img\demo4.png)
+![demo](/app/static/img/demo.png)
+![demo2](/app/static/img/demo2.png)
+![demo3](/app/static/img/demo3.png)
+![demo4](/app/static/img/demo4.png)
 
